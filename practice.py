@@ -43,14 +43,29 @@ people = sc.textfile(<path>).map(lambda x:x.split("\t")).first()
 
 # for "M"
 # reduceByKey() usually following a map which orginaze the data set as tuple (key,value)
+# seems reduceByKey is same as groupByKey() first, then reduce() 
+
 m_sum = sc.textfile(<path>).map(lambda x:x.split("\t")).map(lambda t:(t[1],1)).reduceByKey(lambda x,y :x+y).collect() # collect() return a list of the question
 
 
 # class is back at 1:19 mins
 
 
+first_RDD.join(second_RDD)  #1:32mins, remember there was a bug of join() we can work around by joinByKey 
 
 
+# create an app
+from pyspark import SparkContext, SparkConf
+conf=SparkConf.setAppName(name).setMaster(master) # 1:35min
+sc=SparkContext(conf)
+# or just sc=SparkContext() will also work
+
+# output to file @1:42:20
+
+
+
+@ 1:49:30 DataTable
+@ 1:53:30 json files :: data with schema
 
 
 
