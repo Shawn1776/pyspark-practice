@@ -31,6 +31,22 @@ readme.map(lambda x:x.split('\n')).first()
 
 # reduceBykey (@1hr)
 
+people = sc.textfile(<path>).map(lambda x:x.split("\t")).first()
+# reduceByKey tuple(key,value), reduce the values on the same key
+# find many "M" and "F" genda in people
+# Orlando	M	40	Python
+# Lina	F	39	C#
+# John	M	30	Python
+# Jane	F	32	Python
+# Michelle	F	18	Python
+# Daniel M 20 C#
+
+# for "M"
+# reduceByKey() usually following a map which orginaze the data set as tuple (key,value)
+m_sum = sc.textfile(<path>).map(lambda x:x.split("\t")).map(lambda t:(t[1],1)).reduceByKey(lambda x,y :x+y).collect() # collect() return a list of the question
+
+
+# class is back at 1:19 mins
 
 
 
