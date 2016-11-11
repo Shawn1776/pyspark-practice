@@ -104,6 +104,8 @@ sqlCtx.sql("select name, age FROM people").show()
 
 sqlCtx.sql("select gender, avg(age) as Avg_age from people GROUP BY gender").show()
 
+
+stores_rdd=sc.textFile(path+"/stores.txt").map(lambda x:x.split('\t'))
 from pyspark.sql.types import * # for StructField
 sales_fields=[
   StructField('day',StringType(),False),
@@ -113,8 +115,26 @@ sales_fields=[
 ]
 
 
+from pyspark.sql import * ## what for? , createDataFrame
+sales_schema=StructType(sales_fields)
+sales=sqlCtx.createDataFrame(sales_rdd,sales_schema) # pyspark.sql.SparkSession.createDataFrame(data, schema=None, samplingRatio=None, verifySchema=True)
+sqlCtx.registerDataFrameAsTable(sales,"sales")
+sqlCtx.registerDataFrameAsTable(stores,"stores")
+sqlCtx.registerDataFrameAsTable(products,"products")
 
+# after register as table, then do sql e.g. join
 
+form pyspark.sql import functions as funcs
+
+ ## agg(*exprs): Aggregate on the entire DataFrame without groups (shorthand for df.groupBy.agg()).
+  # there is a comma-> , in the agg(,)
+sales.groupBy('day').agg(funcs.min('store').alias('minStore').funcs.max('quantity').alias('MaxQty')).show()
+
+pyhon and is not work, 
+but & , | for pandas works fine
+
+learn scala for performance
+and how to spin on cluster
 
 
 
