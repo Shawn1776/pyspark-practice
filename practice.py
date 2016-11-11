@@ -1,5 +1,8 @@
+
+##    python introduction first
+
 # from 27 mins--> flatmap, a list of list, pythn has no flatmap but chain can work round of it.
-from intertools import chain
+from intertools import chain 
 # pyspark starts at 36mins (set speed to 1.25x, else too slow), then he teach you how to get rid of the type info
 
 list2=sc.parallelize(range(1,1000)).map(lambda x:x*10) # 42mins
@@ -66,6 +69,51 @@ sc=SparkContext(conf)
 
 @ 1:49:30 DataTable
 @ 1:53:30 json files :: data with schema
+#Any idea? I am using spark2.0.1 pyspark-shell File "<stdin>", line 1, in <module> AttributeError: 'SQLContext' object has no attribute 'jsonFile'﻿
+work around by SQLContext.read.json(<path>) 
+
+## pls let me know if you have any ideas but you have a warning: 
+#WARN ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0 16/11/11 12:47:59 WARN ObjectStore: Failed to get database default, returning NoSuchObjectException﻿
+
+#you can use py.pandas syntax cool!!! #2:04:27
+people.filter(people.age>30).show() # sql syntax 
+people[people.age>30].show()        # pandas syntax
+
+people.groupBy('gender').avg('age').show()
+
+# @2:08 a good disscuess about map( scale nearly linear with your data and reduce nearly linear with your computing nodes 
+#                   vs the dataTable optimizor (optimizing your query takes a constant time as SQL I guess) 
+#                   vs reduce and join( pain, because transfer data over your nodes, but you can partition your data well)
+
+# run sql conmand
+
+people.registerTempTable("people")
+
+sqlCtx.sql("select name, age FROM people").show()
+>>>
++--------+---+
+|    name|age|
++--------+---+
+| Orlando| 40|
+|    Lina| 39|
+|    John| 30|
+|    Jane| 32|
+|Michelle| 18|
+|  Daniel| 20|
++--------+---+
+
+sqlCtx.sql("select gender, avg(age) as Avg_age from people GROUP BY gender").show()
+
+from pyspark.sql.types import * # for StructField
+sales_fields=[
+  StructField('day',StringType(),False),
+  StructFiled('store',StringType(),False),
+  StructField('product',StringType(),False),
+  StructField('quantity', IntegerType(),False),
+]
+
+
+
 
 
 
